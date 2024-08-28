@@ -1,0 +1,161 @@
+<deployment_description>
+	<host id="SC-1">
+		<jee-container-def id="jee1">
+			<container-customization>
+				<!-- can contain: files that are to be copied to jboss installation folder (like standalone.xml, application-roles.properties etc)
+					and/or cli scripts .cli to be executed -->
+				<!-- this is to ensure that we can apply different customizations to 
+					different jee containers -->
+				<deployment-artifact>
+					<name>Ericsson_customization1</name>
+					<version>1.2.3</version>
+				</deployment-artifact>
+				<deployment-artifact>
+					<name>Ericsson_customization2</name>
+					<version>1.2.5</version>
+				</deployment-artifact>
+			</container-customization>
+			<startup-configuration>
+				<!-- Offset implies that there are a number of ports used by JBoss which 
+					need to be opened in the firewall. Current thinking is that either the JBoss 
+					plugin or the LGT needs to be aware of what those ports are and open them 
+					in the firewall configuration. In addition, we have application ports which 
+					need to be added to the firewall configuration. Each service may define multiple 
+					of these. Again either the JBoss plugin or the LGT can take responsibility 
+					for defining these in the firewall config. -->
+				<jboss.socket.binding.port-offset>100</jboss.socket.binding.port-offset>
+				<jboss.default.multicast.address>222.22.2.2</jboss.default.multicast.address>
+				<jgroups.bind_addr>2.3.4.5</jgroups.bind_addr>
+				<jgroups.udp.mcast_addr>222.22.2.2</jgroups.udp.mcast_addr>
+				<jboss.server.log.dir>/opt/multi-jboss/j1/log/</jboss.server.log.dir>
+				<jboss.server.data.dir>/opt/multi-jboss/j1/data/</jboss.server.data.dir>
+				<!-- and many more will be defined here -->
+				<system-parameters>
+					<!-- Parameters which are passed to the JVM using thwe -D flag: -Djava.net.preferIPv4Stack=true 
+						These are used for testing / prototyping new params, ones which are used 
+						frequently get added as explicit properties so they can be properly validated. -->
+					<parameter name="java.net.preferIPv4Stack">true</parameter>
+					<parameter name="sun.rmi.dgc.server.gcInterval">3600000</parameter>
+				</system-parameters>
+				<system-extra-parameters>
+					<!-- Parameters which are preceded by -XX: when passed to the JVM for 
+						example the below will be formatted as: -XX:+PrintGCTimeStamps -->
+					<parameter name="+PrintGCTimeStamps" />
+				</system-extra-parameters>
+				<memoryConfiguration>
+					<!-- maxRequired and minRequired are formatted as: -Xmx=8G and -Xms=4G -->
+					<maxRequired>8GB</maxRequired>
+					<minRequired>4G</minRequired>
+					<!-- max-perm-size is formatted as -XX:MaxPermSize=256m -->
+					<max-perm-size>256m</max-perm-size>
+					<client.gcInterval>3600000</client.gcInterval>
+				</memoryConfiguration>
+			</startup-configuration>
+			<!-- These can be references to users defined elsewhere in the landscape 
+				according to LITP conventions. -->
+			<user>
+				<username>jbossUser1</username>
+				<userid>1001</userid>
+				<primaryGroup>
+					<groupname>jbossGroup</groupname>
+					<groupid>1001</groupid>
+				</primaryGroup>
+			</user>
+			<!-- Need a way to reference filesystems that have been created and we 
+				need to be able to depend on it being present somehow. -->
+			<storageConfiguration>
+				<filesystem>
+					<mountpoint>/opt/multi-jboss/j1/log/</mountpoint>
+					<deviceType>NAS</deviceType>
+					<minimumSize>10G</minimumSize>
+				</filesystem>
+				<filesystem>
+					<mountpoint>/opt/multi-jboss/j1/data/</mountpoint>
+					<deviceType>DAS</deviceType>
+					<minimumSize>50G</minimumSize>
+				</filesystem>
+			</storageConfiguration>
+
+			<!-- -->
+			<networkConfiguration>
+				<requiredOpenedPorts>
+					<port>8080</port>
+					<port>9090</port>
+				</requiredOpenedPorts>
+			</networkConfiguration>
+		</jee-container-def>
+		<jee-container-def id="jee2" extends="jee1">
+			<startup-configuration>
+				<system-parameters>
+					<jboss.socket.binding.port-offset>200</jboss.socket.binding.port-offset>
+				</system-parameters>
+			</startup-configuration>
+		</jee-container-def>
+		<apache-container-def id="apache1">
+			<user>
+				<username>apacheUser1</username>
+				<userid>2001</userid>
+				<primaryGroup>
+					<groupname>apacheGroup</groupname>
+					<groupid>2001</groupid>
+				</primaryGroup>
+			</user>
+			<storageConfiguration>
+				<filesystem>
+					<mountpoint>/var/opt/ericsson/apache/</mountpoint>
+					<deviceType>DAS</deviceType>
+					<minimumSize>10G</minimumSize>
+				</filesystem>
+			</storageConfiguration>
+			<networkConfiguration>
+				<requiredOpenedPorts>
+					<port>8080</port>
+				</requiredOpenedPorts>
+			</networkConfiguration>
+		</apache-container-def>
+		<!-- deployable entity can be EAR/WAR/JAR file or even a group of JBoss modules providing a bunch of -->
+		<!-- jar files to specific folder inside JBoss structure -->
+		<deployable-entities>
+			<deployable-entity>
+				<name>ERICapp1_CXP1234567</name>
+				<version>1.2.1</version>
+				<jee-container-ref id="jee1" />
+				<!-- we might even make separate jee-resource and make reference from deployable-entity to it -->
+				<container-resources>
+					<data-source>
+						<url>jdbc://</url>
+						<username>dbuser</username>
+						<password>dbpass</password>
+					</data-source>
+					<jms-queue>
+						<jndi>/queue/test</jndi>
+						<name>MyServiceTestQueue</name>
+					</jms-queue>
+					<jms-topic>
+						<jndi>/queue/test</jndi>
+						<name>MyServiceTestQueue</name>
+					</jms-topic>
+				<!-- this is basically enabling services to provide their own system property (if they want to) -->
+					<system-properties>
+						<xxx>yyy</xxx>
+					</system-properties>
+				</container-resources>
+				<!-- every deployable-entity might require within the same container some other deployable entities to exist -->
+				<!-- it has to be ensured that dependencies are installed first -->
+				<required-deployable-entities>
+					<deployable-entity>
+						<name>sfkw</name>
+						<version>5.0.0</version>
+					</deployable-entity>
+				</required-deployable-entities>
+			</deployable-entity>
+			<deployable-entity>
+				<name>ERICapp2_CXP1112233</name>
+				<version>1.5.2</version>
+				<jee-container-ref id="jee2" />
+			</deployable-entity>
+		</deployable-entities>
+	</host>
+</deployment_description>
+
+

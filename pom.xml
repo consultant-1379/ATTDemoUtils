@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.ericsson.nms</groupId>
+		<artifactId>integration</artifactId>
+        <version>15.2.0.20</version>
+	</parent>
+	<groupId>com.ericsson.nms.mediation</groupId>
+	<artifactId>ATTDemoUtils</artifactId>
+	<version>1.0.4-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>[${project.artifactId}]  Project</name>
+
+	<properties>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedDependencies>
+									<excludes>
+										<exclude>commons-logging:commons-logging:*:*:jar:compile</exclude>
+										<exclude>log4j:log4j:*:*:jar:compile</exclude>
+									</excludes>
+								</bannedDependencies>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+	</dependencies>
+	<modules>
+        <module>ERIC-MedCore-Campaign</module>
+        <module>ERIC-MedService-Campaign</module>
+        <module>ERIC-PMService-Campaign</module>
+		<module>PMDemoUtils</module>
+	</modules>
+</project>

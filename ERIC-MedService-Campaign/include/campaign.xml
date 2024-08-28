@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ASCII"?>
+  <upgradeCampaign safSmfCampaign="safSmfCampaign=ERIC-MedService-Campaign">
+    <campaignInfo>
+      <campaignPeriod saSmfCmpgExpectedTime="600000000"/>
+    </campaignInfo>
+    <campaignInitialization>
+      <addToImm>
+        <amfEntityTypes>
+          <CompBaseType safCompType="safCompType=ERIC-MedService">
+            <CompType safVersion="safVersion=1.0.0">
+              <providesCSType saAmfCtCompCapability="6" saAmfCtDefNumMaxActiveCsi="0" saAmfCtDefNumMaxStandbyCsi="0" safSupportedCsType="safSupportedCsType=safVersion=1.0.0\,safCSType=ERIC-MedService"/>
+              <compTypeDefaults saAmfCtCompCategory="8" saAmfCtDefCallbackTimeout="10000000000" saAmfCtDefClcCliTimeout="10000000000" saAmfCtDefDisableRestart="0" saAmfCtDefInstantiationLevel="0" saAmfCtDefQuiescingCompleteTimeout="0" saAmfCtDefRecoveryOnError="1"/>
+              <instantiateCmd saAmfCtRelPathInstantiateCmd="../bin/true">
+                <cmdArgv>start</cmdArgv>
+              </instantiateCmd>
+              <terminateCmd saAmfCtRelPathTerminateCmd="../bin/true">
+                <cmdArgv>stop</cmdArgv>
+              </terminateCmd>
+              <cleanupCmd saAmfCtRelPathCleanupCmd="../bin/true">
+                <cmdArgv>stop</cmdArgv>
+              </cleanupCmd>
+              <osafHcCmd osafAmfCtRelPathHcCmd="/bin/true">
+                <cmdArgv>status</cmdArgv>
+              </osafHcCmd>
+              <swBundle saAmfCtSwBundle="safSmfBundle=ERIC-ERICpmmedcom_CXP9030103-2.0.8-1"/>
+            </CompType>
+          </CompBaseType>
+          <SUBaseType safSuType="safSuType=ERIC-MedService">
+            <SUType safVersion="safVersion=1.0.0">
+              <mandatoryAttrs saAmfSutDefSUFailover="0" saAmfSutIsExternal="0"/>
+              <componentType saAmfSutMaxNumComponents="0" saAmfSutMinNumComponents="1" safMemberCompType="safMemberCompType=safVersion=1.0.0\,safCompType=ERIC-MedService"/>
+              <supportedSvcType saAmfSutProvidesSvcType="safVersion=1.0.0,safSvcType=ERIC-MedService"/>
+            </SUType>
+          </SUBaseType>
+          <!-- <SGBaseType safSgType="safSgType=ERIC-tor-nway-active">
+            <SGType safVersion="safVersion=1.0.0">
+              <suType saAmfSgtValidSuTypes="safVersion=1.0.0,safSuType=ERIC-MedService"/>
+              <redundancy saAmfSgtRedundancyModel="4"/>
+              <compRestart saAmfSgtDefCompRestartMax="5" saAmfSgtDefCompRestartProb="100000"/>
+              <suRestart saAmfSgtDefSuRestartMax="5" saAmfSgtDefSuRestartProb="100000"/>
+              <autoAttrs saAmfSgtDefAutoAdjustProb="100000" safAmfSgtDefAutoAdjust="0" safAmfSgtDefAutoRepair="0"/>
+            </SGType>
+          </SGBaseType>
+          <AppBaseType safAppType="safAppType=ERIC-tor">
+            <AppType safVersion="safVersion=1.0.0">
+              <serviceGroupType saAmfApptSGTypes="safVersion=1.0.0,safSgType=ERIC-tor-nway-active"/>
+            </AppType>
+          </AppBaseType> -->
+          <CSBaseType safCSType="safCSType=ERIC-MedService">
+            <CSType safVersion="safVersion=1.0.0"/>
+          </CSBaseType>
+          <ServiceBaseType safSvcType="safSvcType=ERIC-MedService">
+            <ServiceType safVersion="safVersion=1.0.0">
+              <csType saAmfSvctMaxNumCSIs="0" safMemberCSType="safMemberCSType=safVersion=1.0.0\,safCSType=ERIC-MedService"/>
+            </ServiceType>
+          </ServiceBaseType>
+        </amfEntityTypes>
+      </addToImm>
+    </campaignInitialization>
+    <upgradeProcedure safSmfProcedure="safSmfProc=SingleStepProc1" saSmfExecLevel="1">
+      <outageInfo>
+        <acceptableServiceOutage>
+          <all/>
+        </acceptableServiceOutage>
+        <procedurePeriod saSmfProcPeriod="600000000"/>
+      </outageInfo>
+      <procInitAction>
+        <immCCB ccbFlags="0">
+          <!-- <create objectClassName="SaAmfApplication" parentObjectDN="=">
+            <attribute name="safApp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safApp=ERIC-tor</value>
+            </attribute>
+            <attribute name="saAmfAppType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safAppType=ERIC-tor</value>
+            </attribute>
+            <attribute name="saAmfApplicationAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSG" parentObjectDN="safApp=ERIC-tor">
+            <attribute name="safSg" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSg=ERIC-tor-nway-active</value>
+            </attribute>
+            <attribute name="saAmfSGType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safSgType=ERIC-tor-nway-active</value>
+            </attribute>
+            <attribute name="saAmfSGSuHostNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNodeGroup=SCs,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSGNumPrefInserviceSUs" type="SA_IMM_ATTR_SAUINT32T">
+              <value>2</value>
+            </attribute>
+            <attribute name="saAmfSGMaxActiveSIsperSU" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+            <attribute name="saAmfSGAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create> -->
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=ERIC-tor-nway-active,safApp=ERIC-tor">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=ERIC-MedService-0</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safSuType=ERIC-MedService</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-1,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>true</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=ERIC-MedService-0,safSg=ERIC-tor-nway-active,safApp=ERIC-tor">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=ERIC-MedService-0</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safCompType=ERIC-MedService</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=ERIC-MedService-0,safSu=ERIC-MedService-0,safSg=ERIC-tor-nway-active,safApp=ERIC-tor">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=1.0.0\,safCSType=ERIC-MedService</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSU" parentObjectDN="safSg=ERIC-tor-nway-active,safApp=ERIC-tor">
+            <attribute name="safSu" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSu=ERIC-MedService-1</value>
+            </attribute>
+            <attribute name="saAmfSUType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safSuType=ERIC-MedService</value>
+            </attribute>
+            <attribute name="saAmfSURank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>0</value>
+            </attribute>
+            <attribute name="saAmfSUHostNodeOrNodeGroup" type="SA_IMM_ATTR_SANAMET">
+              <value>safAmfNode=SC-2,safAmfCluster=myAmfCluster</value>
+            </attribute>
+            <attribute name="saAmfSUFailover" type="SA_IMM_ATTR_SAUINT32T">
+              <value>true</value>
+            </attribute>
+            <attribute name="saAmfSUAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>3</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfComp" parentObjectDN="safSu=ERIC-MedService-1,safSg=ERIC-tor-nway-active,safApp=ERIC-tor">
+            <attribute name="safComp" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safComp=ERIC-MedService-0</value>
+            </attribute>
+            <attribute name="saAmfCompType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safCompType=ERIC-MedService</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCompCsType" parentObjectDN="safComp=ERIC-MedService-0,safSu=ERIC-MedService-1,safSg=ERIC-tor-nway-active,safApp=ERIC-tor">
+            <attribute name="safSupportedCsType" type="SA_IMM_ATTR_SANAMET">
+              <value>safSupportedCsType=safVersion=1.0.0\,safCSType=ERIC-MedService</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSI" parentObjectDN="safApp=ERIC-tor">
+            <attribute name="safSi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSi=ERIC-pmmedcom-SI-0</value>
+            </attribute>
+            <attribute name="saAmfSvcType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safSvcType=ERIC-MedService</value>
+            </attribute>
+            <attribute name="saAmfSIProtectedbySG" type="SA_IMM_ATTR_SANAMET">
+              <value>safSg=ERIC-tor-nway-active,safApp=ERIC-tor</value>
+            </attribute>
+            <attribute name="saAmfSIRank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+            <attribute name="saAmfSIPrefActiveAssignments" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+            <attribute name="saAmfSIAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCSI" parentObjectDN="safSi=ERIC-pmmedcom-SI-0,safApp=ERIC-tor">
+            <attribute name="safCsi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safCsi=ERIC-pmmedcom-CSI-0</value>
+            </attribute>
+            <attribute name="saAmfCSType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safCSType=ERIC-MedService</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfSI" parentObjectDN="safApp=ERIC-tor">
+            <attribute name="safSi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safSi=ERIC-pmmedcom-SI-1</value>
+            </attribute>
+            <attribute name="saAmfSvcType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safSvcType=ERIC-MedService</value>
+            </attribute>
+            <attribute name="saAmfSIProtectedbySG" type="SA_IMM_ATTR_SANAMET">
+              <value>safSg=ERIC-tor-nway-active,safApp=ERIC-tor</value>
+            </attribute>
+            <attribute name="saAmfSIRank" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+            <attribute name="saAmfSIPrefActiveAssignments" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+            <attribute name="saAmfSIAdminState" type="SA_IMM_ATTR_SAUINT32T">
+              <value>1</value>
+            </attribute>
+          </create>
+          <create objectClassName="SaAmfCSI" parentObjectDN="safSi=ERIC-pmmedcom-SI-1,safApp=ERIC-tor">
+            <attribute name="safCsi" type="SA_IMM_ATTR_SASTRINGT">
+              <value>safCsi=ERIC-pmmedcom-CSI-0</value>
+            </attribute>
+            <attribute name="saAmfCSType" type="SA_IMM_ATTR_SANAMET">
+              <value>safVersion=1.0.0,safCSType=ERIC-MedService</value>
+            </attribute>
+          </create>
+        </immCCB>
+      </procInitAction>
+      <upgradeMethod>
+        <singleStepUpgrade>
+          <upgradeScope>
+            <forAddRemove>
+              <deactivationUnit/>
+              <activationUnit>
+                <actedOn>
+                  <byName objectDN="safSu=ERIC-MedService-0,safSg=ERIC-tor-nway-active,safApp=ERIC-tor"/>
+                  <byName objectDN="safSu=ERIC-MedService-1,safSg=ERIC-tor-nway-active,safApp=ERIC-tor"/>
+                </actedOn>
+                <swAdd bundleDN="safSmfBundle=ERIC-ERICpmmedcom_CXP9030103-2.0.8-1" pathnamePrefix="/opt">
+                  <plmExecEnv amfNode="safAmfNode=SC-1,safAmfCluster=myAmfCluster"/>
+                  <plmExecEnv amfNode="safAmfNode=SC-2,safAmfCluster=myAmfCluster"/>
+                </swAdd>
+              </activationUnit>
+            </forAddRemove>
+          </upgradeScope>
+          <upgradeStep/>
+        </singleStepUpgrade>
+      </upgradeMethod>
+    </upgradeProcedure>
+    <campaignWrapup>
+      <waitToCommit/>
+      <waitToAllowNewCampaign/>
+      <removeFromImm/>
+    </campaignWrapup>
+  </upgradeCampaign>
